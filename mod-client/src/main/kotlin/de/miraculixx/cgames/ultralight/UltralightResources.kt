@@ -20,7 +20,6 @@ package de.miraculixx.cgames.ultralight
 
 import de.miraculixx.cgames.rootConfigFolder
 import de.miraculixx.cgames.utils.WebClient
-import de.miraculixx.cgames.utils.ZipUtils
 import de.miraculixx.cgames.utils.logger
 import org.zeroturnaround.zip.ZipUtil
 import java.io.File
@@ -33,7 +32,7 @@ class UltralightResources {
         /**
          * Exact library version of the LabyMod Ultralight Bindings.
          */
-        private const val LIBRARY_VERSION = "b8daecd_0.4.12"
+        private const val LIBRARY_VERSION = 0.46
         private const val CLIENT_CLOUD = "https://cloud.liquidbounce.net/LiquidBounce"
     }
 
@@ -55,7 +54,7 @@ class UltralightResources {
             val versionsFile = File(ultralightRoot, "VERSION")
 
             // Check if library version is matching the resources version
-            if (versionsFile.exists() && versionsFile.readText() == LIBRARY_VERSION) {
+            if (versionsFile.exists() && versionsFile.readText().toDoubleOrNull() == LIBRARY_VERSION) {
                 return
             }
 
@@ -90,7 +89,7 @@ class UltralightResources {
             logger.info("Extracting resources...")
             ZipUtil.unpack(pkgNatives, ultralightRoot)
             versionsFile.createNewFile()
-            versionsFile.writeText(LIBRARY_VERSION)
+            versionsFile.writeText(LIBRARY_VERSION.toString())
 
             // Make sure to delete zip archive to save space
             logger.debug("Deleting resources bundle...")
