@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "classic-games",
+  "version": "1.1.0",
+
+  "name": "MClassic Games",
+  "description": "Classic Games in Minecraft. Idk where this will go",
+  "authors": ["Miraculixx"],
+  "contact": {
+    "homepage": "https://mutils.de/",
+    "sources": "https://github.com/MiraculixxT/bluemap-marker"
+  },
+
+  "license": "MIT",
+  "icon": "assets/cgames/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "de.miraculixx.cgames.ClassicGames"
+      }
+    ]
+  },
+  "mixins": [],
+
+  "custom": {
+
+  },
+
+  "depends": {
+    "fabricloader": ">=0.14.10",
+    "fabric-api": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {}
+}
