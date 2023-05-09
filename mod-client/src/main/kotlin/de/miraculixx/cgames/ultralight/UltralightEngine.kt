@@ -24,9 +24,10 @@ import com.labymedia.ultralight.UltralightRenderer
 import com.labymedia.ultralight.config.FontHinting
 import com.labymedia.ultralight.config.UltralightConfig
 import com.labymedia.ultralight.gpu.UltralightGPUDriverNativeUtil
-import com.labymedia.ultralight.os.OperatingSystem
 import com.labymedia.ultralight.plugin.logging.UltralightLogLevel
 import de.miraculixx.cgames.client
+import de.miraculixx.cgames.ultralight.hooks.UltralightIntegrationHook
+import de.miraculixx.cgames.ultralight.hooks.UltralightScreenHook
 import de.miraculixx.cgames.ultralight.impl.BrowserFileSystem
 import de.miraculixx.cgames.ultralight.impl.glfw.GlfwClipboardAdapter
 import de.miraculixx.cgames.ultralight.impl.glfw.GlfwCursorAdapter
@@ -35,8 +36,6 @@ import de.miraculixx.cgames.ultralight.impl.renderer.CpuViewRenderer
 import de.miraculixx.cgames.ultralight.js.bindings.UltralightStorage
 import de.miraculixx.cgames.utils.ThreadLock
 import de.miraculixx.cgames.utils.logger
-import de.miraculixx.cgames.ultralight.hooks.UltralightIntegrationHook
-import de.miraculixx.cgames.ultralight.hooks.UltralightScreenHook
 import net.minecraft.client.gui.screens.Screen
 import org.joml.Matrix3dStack
 
@@ -76,9 +75,9 @@ object UltralightEngine {
             UltralightConfig()
                 .animationTimerDelay(1.0 / MAX_FRAME_RATE)
                 .scrollTimerDelay(1.0 / MAX_FRAME_RATE)
+                .resourcePath(resources.resourcesRoot.absolutePath)
                 .cachePath(resources.cacheRoot.absolutePath)
                 .fontHinting(FontHinting.SMOOTH)
-                .forceRepaint(false)
         )
         platform.get().usePlatformFontLoader()
         platform.get().setFileSystem(BrowserFileSystem())
@@ -127,22 +126,6 @@ object UltralightEngine {
         logger.info("Loading ultralight natives")
         val natives = resources.binRoot.toPath()
         logger.info("Native path: $natives")
-
-        val libs = listOf(
-            "glib-2.0-0",
-            "gobject-2.0-0",
-            "gmodule-2.0-0",
-            "gio-2.0-0",
-            "gstreamer-full-1.0",
-            "gthread-2.0-0"
-        )
-        logger.debug("Libraries: $libs")
-
-        val os = OperatingSystem.get()
-        for (lib in libs) {
-            logger.debug("Loading library $lib")
-            System.load(natives.resolve(os.mapLibraryName(lib)).toAbsolutePath().toString())
-        }
 
         logger.debug("Loading UltralightJava")
         UltralightJava.load(natives)
