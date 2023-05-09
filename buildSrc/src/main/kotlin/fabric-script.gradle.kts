@@ -14,13 +14,20 @@ repositories {
     }
 }
 
+val transitiveInclude: Configuration by configurations.creating {
+    exclude(group = "com.mojang")
+    exclude(group = "org.jetbrains.kotlin")
+    exclude(group = "org.jetbrains.kotlinx")
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
     mappings(loom.officialMojangMappings())
 
-    include(implementation("com.labymedia:ultralight-java-base:0.4.6")!!)
-    include(implementation("com.labymedia:ultralight-java-databind:0.4.6")!!)
-    include(implementation("com.labymedia:ultralight-java-gpu:0.4.6")!!)
+    transitiveInclude(implementation("com.labymedia:ultralight-java-base:0.4.6")!!)
+    transitiveInclude(implementation("com.labymedia:ultralight-java-databind:0.4.6")!!)
+    transitiveInclude(implementation("com.labymedia:ultralight-java-gpu:0.4.6")!!)
+    transitiveInclude(implementation("org.zeroturnaround:zt-zip:1.15")!!)
 
     modImplementation("net.silkmc:silk-core:1.9.8")
     modImplementation("net.silkmc:silk-commands:1.9.8")
@@ -29,6 +36,10 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:1.9.4+kotlin.1.8.21")
     modImplementation(include("net.kyori:adventure-platform-fabric:5.8.0")!!)
     modImplementation(include("me.lucko", "fabric-permissions-api", "0.2-SNAPSHOT"))
+
+    transitiveInclude.resolvedConfiguration.resolvedArtifacts.forEach {
+        include(it.moduleVersion.id.toString())
+    }
 }
 
 tasks {
