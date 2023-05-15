@@ -71,7 +71,7 @@ open class ViewOverlay(val layer: RenderLayer, private val viewRenderer: ViewRen
         // Setup JS bindings
         context = UltralightJsContext(this, ultralightView)
 
-        logger.debug("Successfully created new view")
+        logger.info("Successfully created new view")
 
         // Fix black screen issue
         resize(width, height)
